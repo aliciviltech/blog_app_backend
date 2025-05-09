@@ -41,7 +41,7 @@ blogRoutes.put('/update-blog/:id', async(req,res)=>{
         const {id} = req.params;
         const data = req.body;
         const blog = await BlogPost.findByIdAndUpdate(id,data);
-        res.status(200).send({message:'Blog updated successfully', data:blog})
+        res.status(200).send({message:'Blog updated successfully', data:data})
     }catch(error){
         res.status(400).send({message:`Blog updating error at backend: ${error.message}`})
     }

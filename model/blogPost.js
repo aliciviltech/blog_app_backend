@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 
-
 const blogPostSchema = mongoose.Schema({
     user_id: {type:String},
     user_name: {type:String},
@@ -17,6 +16,7 @@ const blogPostSchema = mongoose.Schema({
     ],
     thumbnail:{type:String},
     category:{type:String},
+    section:{type:String},
 },{ timestamps: true })
 
 const BlogPost = mongoose.model('BlogPost',blogPostSchema);

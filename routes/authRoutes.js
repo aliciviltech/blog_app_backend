@@ -5,6 +5,8 @@ import { User } from '../model/user.js';
 
 export const authRoutes = express.Router();
 
+
+// register / signup / create user in mongoDB
 authRoutes.post('/register', async (req, res) => {
     const { name, email, password} = req.body;
     if (!name || !email || !password) {
@@ -25,6 +27,8 @@ authRoutes.post('/register', async (req, res) => {
     res.send({ message: 'user created successfully', newUser })
 })
 
+
+// login / get user from mongoDB, find with email
 authRoutes.post('/login', async (req, res) => {
     
         const { email, password } = req.body;
@@ -46,14 +50,8 @@ authRoutes.post('/login', async (req, res) => {
     
 })
 
-authRoutes.post('/logout', (req, res) => {
-    res.send('logout')
-})
 
-authRoutes.post('/forget-password', (req, res) => {
-    res.send('forget-password')
-})
-
+// get single user data from mongo db find with id
 authRoutes.get('/get_user/:id', async (req, res) => {
     const {id}= req.params;
     try{
@@ -64,7 +62,7 @@ authRoutes.get('/get_user/:id', async (req, res) => {
     }
 })
 
-
+// update single user data in mongo db
 authRoutes.put('/user_update/:id', async (req, res) => {
     const data = req.body;
     const {id}= req.params;
@@ -75,4 +73,14 @@ authRoutes.put('/user_update/:id', async (req, res) => {
     }catch(error){
         res.status(400).send({ message: `User data updating error: ${error}`})
     }
+})
+
+// logout
+authRoutes.post('/logout', (req, res) => {
+    res.send('logout')
+})
+
+// forget password
+authRoutes.post('/forget-password', (req, res) => {
+    res.send('forget-password')
 })
