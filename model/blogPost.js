@@ -7,6 +7,24 @@ const blogPostSchema = mongoose.Schema({
     title:{type:String},
     summary:{type:String},
     blog_content:{type:String},
+    marked_by:[
+        {
+            _id: false,
+            user_id: {type:String},
+        }
+    ],
+    liked_by:[
+        {
+            _id: false,
+            user_id: {type:String},
+        }
+    ],
+    comment_by:[
+        {
+            user_id: {type:String},
+            comment: {type:String}
+        }
+    ],
     blog_comments:[
         {
             commenter_name: {type:String},
