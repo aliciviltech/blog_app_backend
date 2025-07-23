@@ -56,3 +56,21 @@ blogRoutes.put('/update-many', async(req,res)=>{
         res.status(400).send({message:`Many Blogs updating error at backend: ${error.message}`})
     }
 })
+
+
+// search blog
+blogRoutes.get('/search-blogs', async(req,res)=>{
+    const search = req.query.search;
+    try{
+        const blogs = await BlogPost.find({
+            $or:[
+                {title:{$regex:search, $options:'i'}},
+                {blog_content:{$regex:search, $options:'i'}},
+                {user_name:{$regex:search, $options:'i'}},
+            ]
+        });
+        res.status(200).send(blogs)
+    }catch(error){
+        res.status(400).send({message:`Blogs searching error at backend: ${error.message}`})
+    }
+})
