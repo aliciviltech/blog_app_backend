@@ -50,6 +50,23 @@ authRoutes.post('/login', async (req, res) => {
     
 })
 
+// google signin / get user from mongoDB, find with email
+authRoutes.post('/google-signin', async (req, res) => {
+    
+        const {email, displayName, uid, photoURL} = req.body;
+        const user = await User.findOne({ email });
+        if (!user) {
+            try{
+                await User.create({email:email, name:displayName, _id: uid, user_image: photoURL, password:'sd@Ds1245FFSasaAS'})
+            }catch(error){
+                return res.status(400).send(`Error in backend: ${error}`)
+            }
+        }
+        if(user){
+            // const token = jwt.sign({id:user._id}, process.env.JWT_TOKEN);
+            res.status(200).send({ message: "Login successful", data:user})
+        }
+})
 
 // get single user data from mongo db find with id
 authRoutes.get('/get_user/:id', async (req, res) => {
