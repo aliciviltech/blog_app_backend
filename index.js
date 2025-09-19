@@ -12,7 +12,7 @@ app.use(express.json({ limit: "50mb" }));  // Increase JSON limit
 app.use(express.urlencoded({ limit: "50mb", extended: true })); // Increase URL-encoded data limit
 // app.use(express.json());
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: ['http://localhost:5173', 'https://baitulblog.vercel.app/'],
   credentials: true
 }))
 app.use(cookieParser())
