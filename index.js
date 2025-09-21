@@ -8,26 +8,24 @@ import { authRoutes } from './routes/authRoutes.js';
 dotenv.config()
 
 const app = express();
-app.use(cors())
 app.use(express.json({ limit: "50mb" }));  // Increase JSON limit
 app.use(express.urlencoded({ limit: "50mb", extended: true })); // Increase URL-encoded data limit
 // app.use(express.json());
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://baitulblog.vercel.app"
+];
 
-// const allowedOrigins = [
-//   "http://localhost:5173",
-//   "https://baitulblog.vercel.app"
-// ];
-
-// app.use(cors({
-//   origin: (origin, callback) => {
-//     if (!origin || allowedOrigins.includes(origin)) {
-//       callback(null, true);
-//     } else {
-//       callback(new Error("Not allowed by CORS"));
-//     }
-//   },
-//   credentials: true,
-// }));
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+}));
 app.use(cookieParser())
 
 // routes 
