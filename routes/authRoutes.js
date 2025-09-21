@@ -1,11 +1,20 @@
 import express from 'express'
+import Cors from 'cors'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { User } from '../model/user.js';
 import dotenv from 'dotenv'
+import { corsMiddleware } from '../middlewares/corsMiddleware.js';
 dotenv.config()
 
 export const authRoutes = express.Router();
+
+
+const cors = Cors({
+  origin: ["http://localhost:5173", "https://baitulblog.vercel.app"],
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE"],
+});
 
 
 // register / signup / create user in mongoDB
@@ -39,6 +48,8 @@ authRoutes.post('/register', async (req, res) => {
 // login / get user from mongoDB, find with email
 const JWT_SECRETE_KEY = process.env.JWT_SECRETE_KEY
 authRoutes.post('/login', async (req, res) => {
+
+    corsMiddleware(req,res,cors)
 
     const { email, password } = req.body;
     if (!email || !password) {

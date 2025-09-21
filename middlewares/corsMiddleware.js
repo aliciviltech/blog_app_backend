@@ -1,0 +1,15 @@
+import Cors from 'cors'
+
+
+
+// Helper method to wait for middleware
+export function corsMiddleware(req, res, fn) {
+  return new Promise((resolve, reject) => {
+    fn(req, res, (result) => {
+      if (result instanceof Error) {
+        return reject(result);
+      }
+      return resolve(result);
+    });
+  });
+}
