@@ -55,7 +55,7 @@ authRoutes.post('/login', async (req, res) => {
     console.log(JWT_SECRETE_KEY)
     const token = jwt.sign({email:user.email, id:user._id}, JWT_SECRETE_KEY, {expiresIn:'60s'})
     
-    res.cookie('token', token)
+    // res.cookie('token', token)
     res.send({message:'Login Success', user:user})
 })
 
