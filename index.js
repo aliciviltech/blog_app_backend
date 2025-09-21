@@ -11,10 +11,7 @@ const app = express();
 app.use(express.json({ limit: "50mb" }));  // Increase JSON limit
 app.use(express.urlencoded({ limit: "50mb", extended: true })); // Increase URL-encoded data limit
 // app.use(express.json());
-app.use(cors({
-  origin:'http://localhost:5173',
-  credentials: true,
-}))
+app.use(cors())
 
 // const allowedOrigins = [
 //   "http://localhost:5173",
