@@ -1,20 +1,11 @@
 import express from 'express'
-import Cors from 'cors'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { User } from '../model/user.js';
 import dotenv from 'dotenv'
-import { corsMiddleware } from '../middlewares/corsMiddleware.js';
 dotenv.config()
 
 export const authRoutes = express.Router();
-
-
-const cors = Cors({
-    origin: ["http://localhost:5173", "https://baitulblog.vercel.app"],
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE"],
-});
 
 
 // register / signup / create user in mongoDB
@@ -49,43 +40,38 @@ authRoutes.post('/register', async (req, res) => {
 const JWT_SECRETE_KEY = process.env.JWT_SECRETE_KEY
 authRoutes.post('/login', async (req, res) => {
 
-    corsMiddleware(req, res, cors)
-
-    if (req.method == 'POST') {
-        const { email, password } = req.body;
-        if (!email || !password) {
-            return res.status(400).send({ message: "Please fill all the fields" })
-        }
-        const user = await User.findOne({ email });
-        if (!user) {
-            return res.status(400).send({ message: "User not found" })
-        }
-        const isValidPassword = await bcrypt.compare(password, user?.password);
-        if (!isValidPassword) {
-            return res.status(400).send({ message: "Invalid password" })
-        }
-        console.log(JWT_SECRETE_KEY)
-        const token = jwt.sign({ email: user.email, id: user._id }, JWT_SECRETE_KEY, { expiresIn: '60s' })
-
-        res.cookie('token', token)
-        res.send({ message: 'Login Success', user: user })
+    const { email, password } = req.body;
+    if (!email || !password) {
+        return res.status(400).send({ message: "Please fill all the fields" })
     }
-
+    const user = await User.findOne({ email });
+    if (!user) {
+        return res.status(400).send({ message: "User not found" })
+    }
+    const isValidPassword = await bcrypt.compare(password, user?.password);
+    if (!isValidPassword) {
+        return res.status(400).send({ message: "Invalid password" })
+    }
+    console.log(JWT_SECRETE_KEY)
+    const token = jwt.sign({email:user.email, id:user._id}, JWT_SECRETE_KEY, {expiresIn:'60s'})
+    
+    res.cookie('token', token)
+    res.send({message:'Login Success', user:user})
 })
 
 
 // protected route
-authRoutes.get('/profile', async (req, res) => {
+authRoutes.get('/profile', async(req,res)=>{
     const token = req.cookies.token;
     console.log(token)
-    if (!token) {
+    if(!token){
         return res.status(401).send({ message: 'Not logged in' });
     }
-    try {
+    try{
         const decode = jwt.verify(token, JWT_SECRETE_KEY);
-        res.send({ message: `welcome ${decode.email}` })
-    } catch (error) {
-        res.status(401).send({ message: 'Invalid Token' })
+        res.send({message:`welcome ${decode.email}`})
+    } catch(error){
+        res.status(401).send({message:'Invalid Token'})
     }
 })
 
@@ -109,14 +95,14 @@ authRoutes.post('/google-signin', async (req, res) => {
 
 
 // get all users
-authRoutes.get('/get-users', async (req, res) => {
-    try {
+authRoutes.get('/get-users',async(req,res)=>{
+    try{
         const users = await User.find();
         res.status(200).send(users)
-    } catch (error) {
+    }catch(error){
         res.status(400).send(error)
     }
-
+    
 
 })
 
