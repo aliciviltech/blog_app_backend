@@ -16,7 +16,7 @@ app.use(express.json());
 //   "https://baitulblog.vercel.app"
 // ];
 
-app.use(cors())
+app.use(cors({ origin: "http://localhost:5173" }))
 app.use(cookieParser())
 
 // routes 
