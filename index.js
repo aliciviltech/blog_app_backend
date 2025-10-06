@@ -16,11 +16,7 @@ app.use(express.json());
 //   "https://baitulblog.vercel.app"
 // ];
 
-app.use(cors({
-    // origin:'http://localhost:5173',
-    origin:'https://baitulblog.vercel.app'
-    // credentials:true,
-}))
+app.use(cors())
 app.use(cookieParser())
 
 // routes 
